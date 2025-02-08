@@ -14,11 +14,9 @@ working_dir = os.path.dirname(os.path.abspath(__file__))
 
 
 
-diabetes_model = pickle.load(open(r"C:\Users\avach\Downloads\tech saksham disease prediction\diabetes_model.sav", 'rb'))
-
-heart_disease_model = pickle.load(open(r"C:\Users\avach\Downloads\tech saksham disease prediction\heart_disease_model.sav", 'rb'))
-
-parkinsons_model = pickle.load(open(r"C:\Users\avach\Downloads\tech saksham disease prediction\parkinsons_model.sav", 'rb'))
+diabetes_model = pickle.load(open('diabetes_model.sav', 'rb'))
+heart_disease_model = pickle.load(open('heart_disease_model.sav', 'rb'))
+parkinsons_model = pickle.load(open('parkinsons_model.sav', 'rb'))
 
 
 with st.sidebar:
