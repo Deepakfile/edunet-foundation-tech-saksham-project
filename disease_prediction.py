@@ -4,7 +4,7 @@ import streamlit as st
 from streamlit_option_menu import option_menu
 
 
-st.set_page_config(page_title="Prediction of Disease Outbreaks By DA",
+st.set_page_config(page_title="Prediction of Disease Outbreaks By A.D.K",
                    layout="wide",
                    page_icon="DOCTOR")
 
@@ -34,7 +34,7 @@ with st.sidebar:
 if selected == 'Diabetes Prediction':
 
     
-    st.title('Diabetes Prediction using ML by DA')
+    st.title('Diabetes Prediction using ML by A.D.K')
 
     
     col1, col2, col3 = st.columns(3)
@@ -89,7 +89,7 @@ if selected == 'Diabetes Prediction':
 if selected == 'Heart Disease Prediction':
 
     
-    st.title('Heart Disease Prediction using ML By DA')
+    st.title('Heart Disease Prediction using ML By A.D.K')
 
     col1, col2, col3 = st.columns(3)
 
@@ -156,7 +156,7 @@ if selected == 'Heart Disease Prediction':
 if selected == "Parkinsons Prediction":
 
     
-    st.title("Parkinson's Disease Prediction using ML By DA")
+    st.title("Parkinson's Disease Prediction using ML By A.D.K")
 
     col1, col2, col3, col4, col5 = st.columns(5)
 
@@ -246,3 +246,4 @@ if selected == "Parkinsons Prediction":
             parkinsons_diagnosis = "The person does not have Parkinson's disease"
 
     st.success(parkinsons_diagnosis)
+
