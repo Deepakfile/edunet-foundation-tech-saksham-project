@@ -7,18 +7,14 @@ import requests
 import json
 
 
-# ------------------------------------------
-# PAGE CONFIG
-# ------------------------------------------
+
 st.set_page_config(page_title="Prediction of Disease Outbreaks By A.D.K",
                    layout="wide",
                    page_icon="🩺")
 
 working_dir = os.path.dirname(os.path.abspath(__file__))
 
-# ------------------------------------------
-# LOAD MODELS
-# ------------------------------------------
+
 try:
     diabetes_model = pickle.load(open('diabetes_model.sav', 'rb'))
     heart_disease_model = pickle.load(open('heart_disease_model.sav', 'rb'))
@@ -27,9 +23,7 @@ except FileNotFoundError:
     st.error("Error: Model files (.sav) not found. Please ensure they are in the same directory.")
     st.stop()
 
-# ------------------------------------------
-# SIDEBAR MENU
-# ------------------------------------------
+
 with st.sidebar:
     selected = option_menu('Prediction of Disease Outbreaks System',
                            ['Diabetes Prediction',
@@ -40,9 +34,7 @@ with st.sidebar:
                            icons=['activity', 'heart', 'person', 'robot'],
                            default_index=0)
 
-# ------------------------------------------
-# DIABETES PREDICTION
-# ------------------------------------------
+
 if selected == 'Diabetes Prediction':
     st.title('Diabetes Prediction by Dr. A.D.K')
 
@@ -69,14 +61,12 @@ if selected == 'Diabetes Prediction':
                                                  SkinThickness, Insulin, BMI,
                                                  DiabetesPedigreeFunction, Age]]
                 diab_prediction = diabetes_model.predict([user_input])
-                diab_diagnosis = '❗ The person is diabetic' if diab_prediction[0] == 1 else '🟢 The person is not diabetic'
+                diab_diagnosis = ' The person is diabetic' if diab_prediction[0] == 1 else ' The person is not diabetic'
             except ValueError:
-                diab_diagnosis = '❌ Error: Please ensure all inputs are valid numbers.'
+                diab_diagnosis = ' Error: Please ensure all inputs are valid numbers.'
     st.success(diab_diagnosis)
 
-# ------------------------------------------
-# HEART DISEASE PREDICTION
-# ------------------------------------------
+
 if selected == 'Heart Disease Prediction':
     st.title('Heart Disease Prediction by Dr. A.D.K')
 
@@ -108,14 +98,12 @@ if selected == 'Heart Disease Prediction':
                                                  restecg, thalach, exang, oldpeak,
                                                  slope, ca, thal]]
                 heart_prediction = heart_disease_model.predict([user_input])
-                heart_diagnosis = '❗ The person has heart disease' if heart_prediction[0] == 1 else '🟢 The person does not have any heart disease'
+                heart_diagnosis = ' The person has heart disease' if heart_prediction[0] == 1 else ' The person does not have any heart disease'
             except ValueError:
-                heart_diagnosis = '❌ Error: Please ensure all inputs are valid numbers.'
+                heart_diagnosis = ' Error: Please ensure all inputs are valid numbers.'
     st.success(heart_diagnosis)
 
-# ------------------------------------------
-# PARKINSON'S DISEASE PREDICTION
-# ------------------------------------------
+
 if selected == "Parkinsons Prediction":
     st.title("Parkinson's Disease Prediction by Dr. A.D.K")
 
@@ -139,29 +127,23 @@ if selected == "Parkinsons Prediction":
             try:
                 user_input = [float(x) for x in values]
                 parkinsons_prediction = parkinsons_model.predict([user_input])
-                parkinsons_diagnosis = "❗ The person has Parkinson's disease" if parkinsons_prediction[0] == 1 else "🟢 The person does not have Parkinson's disease"
+                parkinsons_diagnosis = " The person has Parkinson's disease" if parkinsons_prediction[0] == 1 else " The person does not have Parkinson's disease"
             except ValueError:
-                parkinsons_diagnosis = '❌ Error: Please ensure all inputs are valid numbers.'
+                parkinsons_diagnosis = ' Error: Please ensure all inputs are valid numbers.'
     st.success(parkinsons_diagnosis)
 
-# ------------------------------------------
-# AI HEALTH ASSISTANT 
-# ------------------------------------------
 
 
-# =======================================================
-# 🤖 AI HEALTH ASSISTANT 
-# =======================================================
+
+
 
 from openai import OpenAI
 import streamlit as st
 
-# -------------------------------
-# AI HEALTH ASSISTANT (MiniMax M2)
-# -------------------------------
+
 
 if selected == "AI Health Assistant 🤖":
-    st.title("🤖 Dr. A.D.K - AI Health & Diet Advisor (MiniMax M2)")
+    st.title("🤖 Dr. A.D.K - AI Health & Diet Advisor.")
     st.write("Ask anything related to health, diseases, diet, or lifestyle.")
     st.code("Sugar wale ko kya khana chahiye?\nHeart patient ke liye best diet kya hai?")
 
@@ -169,10 +151,10 @@ if selected == "AI Health Assistant 🤖":
 
     if st.button("Ask Dr. A.D.K"):
         if question.strip() == "":
-            st.warning("❗ Pehle apna sawal likhiye.")
+            st.warning(" Pehle apna sawal likhiye.")
         else:
             try:
-                # ✅ Using OpenRouter’s OpenAI-compatible API client
+                # Using OpenRouter’s OpenAI-compatible API client
                 client = OpenAI(
                     base_url="https://openrouter.ai/api/v1",  # 👈 Redirects to OpenRouter, not OpenAI
                     api_key=st.secrets["OPENROUTER_API_KEY"]
@@ -191,7 +173,7 @@ if selected == "AI Health Assistant 🤖":
 
                 with st.spinner("🤖 Dr. A.D.K soch rahe hain..."):
                     response = client.chat.completions.create(
-                        model="minimax/minimax-m2",  # 👈 THIS is the MiniMax model name
+                        model="minimax/minimax-m2",  
                         messages=[{"role": "user", "content": prompt}]
                     )
 
@@ -199,9 +181,10 @@ if selected == "AI Health Assistant 🤖":
                     st.success(answer)
 
             except KeyError:
-                st.error("⚠️ Missing API key: Add your OpenRouter API key to Streamlit secrets as 'OPENROUTER_API_KEY'.")
+                st.error("Missing API key: Add your OpenRouter API key to Streamlit secrets as 'OPENROUTER_API_KEY'.")
             except Exception as e:
-                st.error(f"❌ Unexpected Error: {e}")
+                st.error(f" Unexpected Error: {e}")
+
 
 
 
