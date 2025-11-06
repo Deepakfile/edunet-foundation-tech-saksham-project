@@ -257,51 +257,52 @@ if selected == "AI Health Assistant 🤖":
     question = st.text_input("Apna sawal likhiye (Health related only):")
 
     if st.button("Ask Dr. A.D.K"):
-        if question.strip() == "":
-            st.warning("❗ Pehle apna sawal likhiye.")
-        else:
-           API_KEY = st.secrets["OPENROUTER_API_KEY"]
-
-    url = "https://openrouter.ai/api/v1/chat/completions"
-
-    headers = {
-        "Authorization": f"Bearer {API_KEY}",
-        "Content-Type": "application/json",
-        "HTTP-Referer": "https://edunet-foundation-tech-saksham-project-zkc8v9rjayuy9zhjjzcslv.streamlit.app/",
-        "X-Title": "Dr A.D.K Health Assistant"
-    }
-
-    data = {
-        "model": "deepseek/deepseek-r1",
-        "messages": [
-            {
-                "role": "system",
-                "content": (
-                    "You are an AI medical assistant named Dr. A.D.K. "
-                    "You can only answer questions related to health, diseases, diet, or lifestyle. "
-                    "If the user asks about anything outside these topics "
-                    "(like coding, politics, movies, history, or technology), "
-                    "politely reply: 'I'm sorry, I am Dr. A.D.K, and I can only answer health-related questions.' "
-                    "Always reply in the same language that the user used to ask the question."
-                )
-            },
-            {"role": "user", "content": question}
-        ]
-    }
-
-    with st.spinner("🤖 Dr. A.D.K soch rahe hain..."):
-        response = requests.post(url, headers=headers, json=data)
-
-    if response.status_code == 200:
-        try:
-            reply = response.json()["choices"][0]["message"]["content"]
-            st.success(reply)
-        except:
-            st.error("⚠️ Unexpected response format.")
+    if question.strip() == "":
+        st.warning("❗ Pehle apna sawal likhiye.")
     else:
-        st.error(f"❌ API Error: {response.status_code}")
+        API_KEY = st.secrets["OPENROUTER_API_KEY"]
+
+        url = "https://openrouter.ai/api/v1/chat/completions"
+
+        headers = {
+            "Authorization": f"Bearer {API_KEY}",
+            "Content-Type": "application/json",
+            "HTTP-Referer": "https://edunet-foundation-tech-saksham-project-zkc8v9rjayuy9zhjjzcslv.streamlit.app/",
+            "X-Title": "Dr A.D.K Health Assistant"
+        }
+
+        data = {
+            "model": "deepseek/deepseek-r1",
+            "messages": [
+                {
+                    "role": "system",
+                    "content": (
+                        "You are an AI medical assistant named Dr. A.D.K. "
+                        "You can only answer questions related to health, diseases, diet, or lifestyle. "
+                        "If the user asks about anything outside these topics "
+                        "(like coding, politics, movies, history, or technology), "
+                        "politely reply: 'I'm sorry, I am Dr. A.D.K, and I can only answer health-related questions.' "
+                        "Always reply in the same language that the user used to ask the question."
+                    )
+                },
+                {"role": "user", "content": question}
+            ]
+        }
+
+        with st.spinner("🤖 Dr. A.D.K soch rahe hain..."):
+            response = requests.post(url, headers=headers, json=data)
+
+        if response.status_code == 200:
+            try:
+                reply = response.json()["choices"][0]["message"]["content"]
+                st.success(reply)
+            except:
+                st.error("⚠️ Unexpected response format.")
+        else:
+            st.error(f"❌ API Error: {response.status_code}")
 
      
+
 
 
 
