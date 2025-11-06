@@ -25,7 +25,7 @@ with st.sidebar:
 
                            ['Diabetes Prediction',
                             'Heart Disease Prediction',
-                            'Parkinsons Prediction'
+                            'Parkinsons Prediction',
                             'AI Health Assistant 🤖'],
                            menu_icon='hospital-fill',
                            icons=['activity', 'heart', 'person', 'robot'],
@@ -298,5 +298,6 @@ if selected == "AI Health Assistant 🤖":
                     st.error("⚠️ Unexpected response format.")
             else:
                 st.error(f"❌ API Error: {response.status_code}")
+
 
 
