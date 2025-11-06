@@ -158,12 +158,10 @@ if selected == "AI Health Assistant 🤖":
             st.warning("❗ Pehle apna sawal likhiye.")
         else:
             try:
-                # Use Gemini API
+                import google.generativeai as genai  # ✅ Must be imported
                 API_KEY = st.secrets["GEMINI_API_KEY"]
                 genai.configure(api_key=API_KEY)
                 model = genai.GenerativeModel("gemini-1.5-flash-latest")
-
-
 
                 prompt = f"""
                 You are Dr. A.D.K, a professional AI medical assistant.
@@ -183,6 +181,4 @@ if selected == "AI Health Assistant 🤖":
                 st.error("⚠️ 'GEMINI_API_KEY' missing in Streamlit secrets.")
             except Exception as e:
                 st.error(f"❌ Error: {e}")
-
-
 
