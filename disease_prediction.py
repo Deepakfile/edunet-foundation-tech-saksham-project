@@ -158,27 +158,42 @@ if selected == "AI Health Assistant 🤖":
             st.warning("❗ Pehle apna sawal likhiye.")
         else:
             try:
-                import google.generativeai as genai  # ✅ Must be imported
                 API_KEY = st.secrets["GEMINI_API_KEY"]
-                genai.configure(api_key=API_KEY)
-                model = genai.GenerativeModel("gemini-1.5-flash-latest")
 
-                prompt = f"""
-                You are Dr. A.D.K, a professional AI medical assistant.
-                You can only answer questions related to health, diseases, diet, or lifestyle.
-                If the user asks about anything outside these topics (like coding, politics, movies, or history),
-                reply: "I'm sorry, I am Dr. A.D.K, and I can only answer health-related questions."
-                Always reply in the same language that the user used.
+                url = f"https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash-latest:generateContent?key={API_KEY}"
 
-                Question: {question}
-                """
+                headers = {"Content-Type": "application/json"}
+
+                payload = {
+                    "contents": [
+                        {
+                            "parts": [
+                                {
+                                    "text": f"""
+You are Dr. A.D.K, a professional AI medical assistant.
+You can only answer questions related to health, diseases, diet, or lifestyle.
+If the user asks about anything outside these topics (like coding, politics, movies, or history),
+reply: "I'm sorry, I am Dr. A.D.K, and I can only answer health-related questions."
+Always reply in the same language that the user used.
+
+Question: {question}
+"""
+                                }
+                            ]
+                        }
+                    ]
+                }
 
                 with st.spinner("🤖 Dr. A.D.K soch rahe hain..."):
-                    response = model.generate_content(prompt)
-                    st.success(response.text)
+                    response = requests.post(url, headers=headers, data=json.dumps(payload))
+                    if response.status_code == 200:
+                        text = response.json()["candidates"][0]["content"]["parts"][0]["text"]
+                        st.success(text)
+                    else:
+                        st.error(f"❌ API Error {response.status_code}: {response.text}")
 
             except KeyError:
                 st.error("⚠️ 'GEMINI_API_KEY' missing in Streamlit secrets.")
             except Exception as e:
-                st.error(f"❌ Error: {e}")
+                st.error(f"❌ Unexpected Error: {e}")
 
