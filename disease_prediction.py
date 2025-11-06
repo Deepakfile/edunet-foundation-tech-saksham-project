@@ -173,7 +173,8 @@ if selected == "AI Health Assistant 🤖":
                 genai.configure(api_key=API_KEY)
 
                 # Initialize Gemini model
-                model = genai.GenerativeModel("gemini-1.5-flash")
+                model = genai.GenerativeModel("gemini-1.5-flash-001")
+
 
                 # Construct the prompt
                 prompt = f"""
@@ -197,3 +198,4 @@ if selected == "AI Health Assistant 🤖":
                 st.error("⚠️ 'GEMINI_API_KEY' missing in Streamlit secrets.")
             except Exception as e:
                 st.error(f"❌ Unexpected Error: {e}")
+
