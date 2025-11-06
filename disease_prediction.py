@@ -184,9 +184,6 @@ if selected == "AI Health Assistant 🤖":
             headers = {
                 "Authorization": f"Bearer {API_KEY}",
                 "Content-Type": "application/json",
-                
-                "HTTP-Referer": "https://edunet-foundation-tech-saksham-project-zkc8v9rjayuy9zhjjzcslv.streamlit.app/",
-                "X-Title": "Dr A.D.K Health Assistant"
             }
 
             data = {
