@@ -260,13 +260,18 @@ if selected == "AI Health Assistant 🤖":
         if question.strip() == "":
             st.warning("❗ Pehle apna sawal likhiye.")
         else:
-            API_KEY = "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"  # <-- apna OpenRouter API key daal
-            url = "https://openrouter.ai/api/v1/chat/completions"
+API_KEY = st.secrets["OPENROUTER_API_KEY"]
 
-            headers = {
-                "Authorization": f"Bearer {API_KEY}",
-                "Content-Type": "application/json"
-            }
+url = "https://openrouter.ai/api/v1/chat/completions"
+
+headers = {
+    "Authorization": f"Bearer {API_KEY}",
+    "Content-Type": "application/json",
+    "HTTP-Referer": "https://edunet-foundation-tech-saksham-project-zkc8v9rjayuy9zhjjzcslv.streamlit.app/",
+    "X-Title": "Dr A.D.K Health Assistant"
+}
+
+
 
             data = {
                 "model": "deepseek/deepseek-r1",
@@ -298,6 +303,7 @@ if selected == "AI Health Assistant 🤖":
                     st.error("⚠️ Unexpected response format.")
             else:
                 st.error(f"❌ API Error: {response.status_code}")
+
 
 
 
