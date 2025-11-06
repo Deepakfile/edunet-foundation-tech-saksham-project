@@ -178,13 +178,19 @@ if selected == "AI Health Assistant 🤖":
                         messages=[{"role": "user", "content": prompt}]
                     )
 
-                    answer = response.choices[0].message.content.strip()
-                    st.success(answer)
+                    st.session_state.reply = response.choices[0].message.content.strip()
+
+            except Exception as e:
+                st.session_state.reply = f"❌ Unexpected Error: {e}"
+
+    if st.session_state.reply:
+        st.success(st.session_state.reply)
 
             except KeyError:
                 st.error("Missing API key: Add your OpenRouter API key to Streamlit secrets as 'OPENROUTER_API_KEY'.")
             except Exception as e:
                 st.error(f" Unexpected Error: {e}")
+
 
 
 
