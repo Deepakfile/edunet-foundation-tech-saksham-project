@@ -2,11 +2,12 @@ import os
 import pickle
 import streamlit as st
 from streamlit_option_menu import option_menu
+import requests
 
 
 st.set_page_config(page_title="Prediction of Disease Outbreaks By A.D.K",
                    layout="wide",
-                   page_icon="DOCTOR")
+                   page_icon="DOCTOR 🩺")
 
     
 
@@ -24,9 +25,10 @@ with st.sidebar:
 
                            ['Diabetes Prediction',
                             'Heart Disease Prediction',
-                            'Parkinsons Prediction'],
+                            'Parkinsons Prediction'
+                            'AI Health Assistant 🤖'],
                            menu_icon='hospital-fill',
-                           icons=['activity', 'heart', 'person'],
+                           icons=['activity', 'heart', 'person', 'robot'],
                            default_index=0)
 
 
@@ -34,7 +36,7 @@ with st.sidebar:
 if selected == 'Diabetes Prediction':
 
     
-    st.title('Diabetes Prediction using ML by A.D.K')
+    st.title('Diabetes Prediction by DR.A.D.K ')
 
     
     col1, col2, col3 = st.columns(3)
@@ -89,7 +91,7 @@ if selected == 'Diabetes Prediction':
 if selected == 'Heart Disease Prediction':
 
     
-    st.title('Heart Disease Prediction using ML By A.D.K')
+    st.title('Heart Disease Prediction By DR.A.D.K ')
 
     col1, col2, col3 = st.columns(3)
 
@@ -156,7 +158,7 @@ if selected == 'Heart Disease Prediction':
 if selected == "Parkinsons Prediction":
 
     
-    st.title("Parkinson's Disease Prediction using ML By A.D.K")
+    st.title("Parkinson's Disease Prediction By DR.A.D.K ")
 
     col1, col2, col3, col4, col5 = st.columns(5)
 
@@ -246,4 +248,55 @@ if selected == "Parkinsons Prediction":
             parkinsons_diagnosis = "The person does not have Parkinson's disease"
 
     st.success(parkinsons_diagnosis)
+
+if selected == "AI Health Assistant 🤖":
+    st.title("🤖 Dr. A.D.K - AI Health & Diet Advisor")
+    st.write("Ask anything related to diet, lifestyle & precautions.\nExample:")
+    st.code("Sugar wale ko kya khana chahiye?\nHeart patient ke liye best diet kya hai?")
+
+    question = st.text_input("Apna sawal likhiye (Health related only):")
+
+    if st.button("Ask Dr. A.D.K"):
+        if question.strip() == "":
+            st.warning("❗ Pehle apna sawal likhiye.")
+        else:
+            API_KEY = "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"  # <-- apna OpenRouter API key daal
+            url = "https://openrouter.ai/api/v1/chat/completions"
+
+            headers = {
+                "Authorization": f"Bearer {API_KEY}",
+                "Content-Type": "application/json"
+            }
+
+            data = {
+                "model": "deepseek/deepseek-r1",
+                "messages": [
+                    {
+                        "role": "system",
+                        "content": (
+                            "You are an AI medical assistant named Dr. A.D.K. "
+                            "You can only answer questions related to health, diseases, diet, or lifestyle. "
+                            "If the user asks about anything outside these topics "
+                            "(like coding, politics, movies, history, or technology), "
+                            "politely reply: 'I'm sorry, I am Dr. A.D.K, and I can only answer health-related questions.' "
+                            "Always reply in the same language that the user used to ask the question."
+
+                        )
+                    },
+                    {"role": "user", "content": question}
+                ]
+            }
+
+            with st.spinner("🤖 Dr. A.D.K soch rahe hain..."):
+                response = requests.post(url, headers=headers, json=data)
+
+            if response.status_code == 200:
+                try:
+                    reply = response.json()["choices"][0]["message"]["content"]
+                    st.success(reply)
+                except:
+                    st.error("⚠️ Unexpected response format.")
+            else:
+                st.error(f"❌ API Error: {response.status_code}")
+
 
