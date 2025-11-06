@@ -145,20 +145,20 @@ if selected == "Parkinsons Prediction":
     st.success(parkinsons_diagnosis)
 
 # ------------------------------------------
-# AI HEALTH ASSISTANT (GEMINI)
+# AI HEALTH ASSISTANT 
 # ------------------------------------------
 
 
 # =======================================================
-# 🤖 AI HEALTH ASSISTANT (GEMINI)
+# 🤖 AI HEALTH ASSISTANT 
 # =======================================================
 
-import google.generativeai as genai
-
+import streamlit as st
+from openai import OpenAI
 
 if selected == "AI Health Assistant 🤖":
-    st.title("🤖 Dr. A.D.K - AI Health & Diet Advisor")
-    st.write("Ask anything related to diet, lifestyle, or health precautions.\nExample:")
+    st.title("🤖 Dr. A.D.K - AI Health & Diet Advisor (OpenAI)")
+    st.write("Ask anything related to health, diseases, diet, or lifestyle.")
     st.code("Sugar wale ko kya khana chahiye?\nHeart patient ke liye best diet kya hai?")
 
     question = st.text_input("Apna sawal likhiye (Health related only):")
@@ -168,35 +168,28 @@ if selected == "AI Health Assistant 🤖":
             st.warning("❗ Pehle apna sawal likhiye.")
         else:
             try:
-                # Load API key from Streamlit secrets
-                API_KEY = st.secrets["GEMINI_API_KEY"]
-                genai.configure(api_key=API_KEY)
+                client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 
-                # Initialize Gemini model
-                model = genai.GenerativeModel("gemini-pro")
-
-
-                # Construct the prompt
                 prompt = f"""
                 You are Dr. A.D.K, a professional AI medical assistant.
                 You can only answer questions related to health, diseases, diet, or lifestyle.
-                If the user asks about anything outside these topics (like coding, politics, movies, or history),
+                If the user asks about anything outside these topics
+                (like coding, politics, movies, or history),
                 politely reply: "I'm sorry, I am Dr. A.D.K, and I can only answer health-related questions."
                 Always reply in the same language that the user used.
 
                 Question: {question}
                 """
 
-                # Generate AI response
                 with st.spinner("🤖 Dr. A.D.K soch rahe hain..."):
-                    response = model.generate_content(prompt)
+                    response = client.chat.completions.create(
+                        model="gpt-3.5-turbo",
+                        messages=[{"role": "user", "content": prompt}]
+                    )
+                    st.success(response.choices[0].message.content)
 
-                    # Display AI reply
-                    st.success(response.text)
-
-            except KeyError:
-                st.error("⚠️ 'GEMINI_API_KEY' missing in Streamlit secrets.")
             except Exception as e:
                 st.error(f"❌ Unexpected Error: {e}")
+
 
 
