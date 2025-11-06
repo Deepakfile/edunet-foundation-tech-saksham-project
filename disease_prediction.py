@@ -3,6 +3,9 @@ import pickle
 import streamlit as st
 from streamlit_option_menu import option_menu
 import google.generativeai as genai
+import requests
+import json
+
 
 # ------------------------------------------
 # PAGE CONFIG
@@ -196,4 +199,5 @@ Question: {question}
                 st.error("⚠️ 'GEMINI_API_KEY' missing in Streamlit secrets.")
             except Exception as e:
                 st.error(f"❌ Unexpected Error: {e}")
+
 
