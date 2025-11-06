@@ -144,6 +144,8 @@ if selected == "Parkinsons Prediction":
 # ------------------------------------------
 # AI HEALTH ASSISTANT (GEMINI)
 # ------------------------------------------
+import google.generativeai as genai
+
 if selected == "AI Health Assistant 🤖":
     st.title("🤖 Dr. A.D.K - AI Health & Diet Advisor")
     st.write("Ask anything related to diet, lifestyle & precautions.\nExample:")
@@ -156,33 +158,26 @@ if selected == "AI Health Assistant 🤖":
             st.warning("❗ Pehle apna sawal likhiye.")
         else:
             try:
-                # Load Gemini API key
-                if "GEMINI_API_KEY" not in st.secrets:
-                    st.error("⚠️ Configuration Error: 'GEMINI_API_KEY' not found in Streamlit secrets.")
-                    st.stop()
-
+                # Use Gemini API
                 API_KEY = st.secrets["GEMINI_API_KEY"]
                 genai.configure(api_key=API_KEY)
                 model = genai.GenerativeModel("gemini-1.5-flash")
 
                 prompt = f"""
-                You are an AI medical assistant named Dr. A.D.K.
+                You are Dr. A.D.K, a professional AI medical assistant.
                 You can only answer questions related to health, diseases, diet, or lifestyle.
-                If the user asks about anything outside these topics
-                (like coding, politics, movies, history, or technology),
-                politely reply: 'I'm sorry, I am Dr. A.D.K, and I can only answer health-related questions.'
-                Always reply in the same language that the user used to ask the question.
+                If the user asks about anything outside these topics (like coding, politics, movies, or history),
+                reply: "I'm sorry, I am Dr. A.D.K, and I can only answer health-related questions."
+                Always reply in the same language that the user used.
 
                 Question: {question}
                 """
 
                 with st.spinner("🤖 Dr. A.D.K soch rahe hain..."):
                     response = model.generate_content(prompt)
-
-                if response and response.text:
                     st.success(response.text)
-                else:
-                    st.error("⚠️ No response from Gemini API.")
 
+            except KeyError:
+                st.error("⚠️ 'GEMINI_API_KEY' missing in Streamlit secrets.")
             except Exception as e:
                 st.error(f"❌ Error: {e}")
