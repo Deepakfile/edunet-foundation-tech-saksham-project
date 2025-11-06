@@ -1,4 +1,15 @@
-API_KEY = st.secrets["OPENROUTER_API_KEY"]
+import os
+import pickle
+import requests
+import streamlit as st
+from streamlit_option_menu import option_menu
+
+# ✅ Always keep secret loading AFTER import streamlit
+API_KEY = st.secrets.get("OPENROUTER_API_KEY")
+
+if not API_KEY:
+    st.error("❌ OPENROUTER_API_KEY not found. Add it in Streamlit → Settings → Secrets.")
+    st.stop()
 
 url = "https://openrouter.ai/api/v1/chat/completions"
 
@@ -19,4 +30,6 @@ data = {
 
 response = requests.post(url, headers=headers, json=data)
 
-st.write(response.status_code, response.text)
+# ✅ print what actually happens (for debugging)
+st.write("Status code:", response.status_code)
+st.code(response.text)
