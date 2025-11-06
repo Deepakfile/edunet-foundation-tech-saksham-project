@@ -139,7 +139,8 @@ if selected == "Parkinsons Prediction":
 
 from openai import OpenAI
 import streamlit as st
-
+if "reply" not in st.session_state:
+    st.session_state.reply = ""
 
 
 if selected == "AI Health Assistant 🤖":
@@ -184,6 +185,7 @@ if selected == "AI Health Assistant 🤖":
                 st.error("Missing API key: Add your OpenRouter API key to Streamlit secrets as 'OPENROUTER_API_KEY'.")
             except Exception as e:
                 st.error(f" Unexpected Error: {e}")
+
 
 
 
