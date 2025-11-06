@@ -153,11 +153,15 @@ if selected == "Parkinsons Prediction":
 # 🤖 AI HEALTH ASSISTANT 
 # =======================================================
 
-import streamlit as st
 from openai import OpenAI
+import streamlit as st
+
+# -------------------------------
+# AI HEALTH ASSISTANT (MiniMax M2)
+# -------------------------------
 
 if selected == "AI Health Assistant 🤖":
-    st.title("🤖 Dr. A.D.K - AI Health & Diet Advisor (OpenAI)")
+    st.title("🤖 Dr. A.D.K - AI Health & Diet Advisor (MiniMax M2)")
     st.write("Ask anything related to health, diseases, diet, or lifestyle.")
     st.code("Sugar wale ko kya khana chahiye?\nHeart patient ke liye best diet kya hai?")
 
@@ -168,7 +172,11 @@ if selected == "AI Health Assistant 🤖":
             st.warning("❗ Pehle apna sawal likhiye.")
         else:
             try:
-                client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
+                # ✅ Using OpenRouter’s OpenAI-compatible API client
+                client = OpenAI(
+                    base_url="https://openrouter.ai/api/v1",  # 👈 Redirects to OpenRouter, not OpenAI
+                    api_key=st.secrets["OPENROUTER_API_KEY"]
+                )
 
                 prompt = f"""
                 You are Dr. A.D.K, a professional AI medical assistant.
@@ -183,13 +191,19 @@ if selected == "AI Health Assistant 🤖":
 
                 with st.spinner("🤖 Dr. A.D.K soch rahe hain..."):
                     response = client.chat.completions.create(
-                        model="gpt-3.5-turbo",
+                        model="minimax/minimax-m2",  # 👈 THIS is the MiniMax model name
                         messages=[{"role": "user", "content": prompt}]
                     )
-                    st.success(response.choices[0].message.content)
 
+                    answer = response.choices[0].message.content.strip()
+                    st.success(answer)
+
+            except KeyError:
+                st.error("⚠️ Missing API key: Add your OpenRouter API key to Streamlit secrets as 'OPENROUTER_API_KEY'.")
             except Exception as e:
                 st.error(f"❌ Unexpected Error: {e}")
+
+
 
 
 
