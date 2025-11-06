@@ -260,7 +260,7 @@ if selected == "AI Health Assistant 🤖":
         if question.strip() == "":
             st.warning("❗ Pehle apna sawal likhiye.")
         else:
-            API_KEY = st.secrets["GROQ_API_KEY"]  # use Groq API key instead
+            API_KEY = st.secrets["GROQ_API_KEY"]
 
 url = "https://api.groq.com/openai/v1/chat/completions"
 
@@ -270,7 +270,7 @@ headers = {
 }
 
 data = {
-    "model": "llama-3.1-8b-instant",  # fast, free model
+    "model": "llama-3.1-8b-instant",
     "messages": [
         {
             "role": "system",
@@ -291,19 +291,17 @@ with st.spinner("🤖 Dr. A.D.K soch rahe hain..."):
     response = requests.post(url, headers=headers, json=data)
 
 if response.status_code == 200:
-    try:
-        reply = response.json()["choices"][0]["message"]["content"]
-        st.success(reply)
-    except Exception as e:
-        st.error("⚠️ Unexpected response format.")
-        st.write(response.text)
+    reply = response.json()["choices"][0]["message"]["content"]
+    st.success(reply)
 else:
     st.error(f"❌ API Error: {response.status_code}")
     st.write(response.text)
 
 
 
+
      
+
 
 
 
