@@ -144,7 +144,7 @@ if selected == "Parkinsons Prediction":
 # ------------------------------------------
 # AI HEALTH ASSISTANT (GEMINI)
 # ------------------------------------------
-import google.generativeai as genai
+
 
 if selected == "AI Health Assistant 🤖":
     st.title("🤖 Dr. A.D.K - AI Health & Diet Advisor")
@@ -181,3 +181,4 @@ if selected == "AI Health Assistant 🤖":
                 st.error("⚠️ 'GEMINI_API_KEY' missing in Streamlit secrets.")
             except Exception as e:
                 st.error(f"❌ Error: {e}")
+
