@@ -260,7 +260,7 @@ if selected == "AI Health Assistant 🤖":
         if question.strip() == "":
             st.warning("❗ Pehle apna sawal likhiye.")
         else:
-    API_KEY = st.secrets["OPENROUTER_API_KEY"]
+           API_KEY = st.secrets["OPENROUTER_API_KEY"]
 
     url = "https://openrouter.ai/api/v1/chat/completions"
 
@@ -270,6 +270,7 @@ if selected == "AI Health Assistant 🤖":
         "HTTP-Referer": "https://edunet-foundation-tech-saksham-project-zkc8v9rjayuy9zhjjzcslv.streamlit.app/",
         "X-Title": "Dr A.D.K Health Assistant"
     }
+
 
 
 
@@ -304,6 +305,7 @@ if selected == "AI Health Assistant 🤖":
                     st.error("⚠️ Unexpected response format.")
             else:
                 st.error(f"❌ API Error: {response.status_code}")
+
 
 
 
