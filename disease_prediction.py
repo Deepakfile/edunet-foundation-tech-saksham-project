@@ -270,12 +270,7 @@ if selected == "AI Health Assistant 🤖":
         "HTTP-Referer": "https://edunet-foundation-tech-saksham-project-zkc8v9rjayuy9zhjjzcslv.streamlit.app/",
         "X-Title": "Dr A.D.K Health Assistant"
     }
-
-
-
-
-
-            data = {
+     data = {
                 "model": "deepseek/deepseek-r1",
                 "messages": [
                     {
@@ -305,6 +300,10 @@ if selected == "AI Health Assistant 🤖":
                     st.error("⚠️ Unexpected response format.")
             else:
                 st.error(f"❌ API Error: {response.status_code}")
+    
+
+     
+
 
 
 
