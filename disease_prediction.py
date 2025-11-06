@@ -157,7 +157,7 @@ if selected == "AI Health Assistant 🤖":
             try:
                 # Using OpenRouter’s OpenAI-compatible API client
                 client = OpenAI(
-                    base_url="https://openrouter.ai/api/v1",  # 👈 Redirects to OpenRouter, not OpenAI
+                    base_url="https://openrouter.ai/api/v1",  
                     api_key=st.secrets["OPENROUTER_API_KEY"]
                 )
 
@@ -181,12 +181,13 @@ if selected == "AI Health Assistant 🤖":
                     st.session_state.reply = response.choices[0].message.content.strip()
 
             except Exception as e:
-                st.session_state.reply = f"❌ Unexpected Error: {e}"
+                st.session_state.reply = f"Unexpected Error: {e}"
 
     if st.session_state.reply:
         st.success(st.session_state.reply)
 
             
+
 
 
 
