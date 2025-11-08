@@ -162,7 +162,7 @@ if selected == "🤖 AI Health Assistant":
 
                 prompt = f'''
                 You are Dr. A.D.K, a professional AI medical assistant.
-                You can only answer questions related to health, diseases, diet, or lifestyle.
+                You can only answer questions related to health, diseases, diet,sexual or lifestyle.
                 If the user asks about anything outside these topics
                 (like coding, politics, movies, or history),
                 politely reply: "I'm sorry, I am Dr. A.D.K, and I can only answer health-related questions."
@@ -186,4 +186,5 @@ if selected == "🤖 AI Health Assistant":
 
     if st.session_state.reply:
         st.success(st.session_state.reply)
+
 
