@@ -160,16 +160,17 @@ if selected == "AI Health Assistant 🤖":
                     api_key=st.secrets["OPENROUTER_API_KEY"]
                 )
 
-                prompt = f"""
+                prompt = f'''
                 You are Dr. A.D.K, a professional AI medical assistant.
                 You can only answer questions related to health, diseases, diet, or lifestyle.
                 If the user asks about anything outside these topics
                 (like coding, politics, movies, or history),
                 politely reply: "I'm sorry, I am Dr. A.D.K, and I can only answer health-related questions."
-                Always reply in the same language that the user used.
+                Always reply in the same language that the user used, if user not mentioning the word 
+                as detail in his question then reply in short and meaningful answer.
 
                 Question: {question}
-                """
+                '''
 
                 with st.spinner("🤖 Dr. A.D.K soch rahe hain..."):
                     response = client.chat.completions.create(
@@ -186,6 +187,7 @@ if selected == "AI Health Assistant 🤖":
         st.success(st.session_state.reply)
 
             
+
 
 
 
