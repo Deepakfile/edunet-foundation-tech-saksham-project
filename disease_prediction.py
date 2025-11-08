@@ -5,36 +5,51 @@ from streamlit_option_menu import option_menu
 import requests
 import json
 
-
-
+# --- PAGE CONFIG ---
 st.set_page_config(page_title="Prediction of Disease Outbreaks By A.D.K",
                    layout="wide",
                    page_icon="🩺")
 
+# --- LOAD MODELS ---
 working_dir = os.path.dirname(os.path.abspath(__file__))
 
-
 try:
-    diabetes_model = pickle.load(open('diabetes_model.sav', 'rb'))
-    heart_disease_model = pickle.load(open('heart_disease_model.sav', 'rb'))
-    parkinsons_model = pickle.load(open('parkinsons_model.sav', 'rb'))
+    diabetes_model = pickle.load(open(os.path.join(working_dir, 'diabetes_model.sav'), 'rb'))
+    heart_disease_model = pickle.load(open(os.path.join(working_dir, 'heart_disease_model.sav'), 'rb'))
+    parkinsons_model = pickle.load(open(os.path.join(working_dir, 'parkinsons_model.sav'), 'rb'))
 except FileNotFoundError:
-    st.error("Error: Model files (.sav) not found. Please ensure they are in the same directory.")
+    st.error("Model files not found. Please ensure all `.sav` files are in the same directory.")
     st.stop()
 
-
+# --- SIDEBAR MENU ---
 with st.sidebar:
-    selected = option_menu('Prediction of Disease Outbreaks System',
-                           ['Diabetes Prediction',
-                            'Heart Disease Prediction',
-                            'Parkinsons Prediction',
-                            'AI Health Assistant 🤖'],
-                           menu_icon='hospital-fill',
-                           icons=['activity', 'heart', 'person', 'robot'],
-                           default_index=0)
+    selected = option_menu(
+        '🩺 Prediction of Disease Outbreaks System',
+        ['🏠 Home',
+         ' Diabetes Prediction',
+         ' Heart Disease Prediction',
+         ' Parkinson’s Prediction',
+         '🤖 AI Health Assistant'],
+        menu_icon='hospital-fill',
+        icons=['house', 'activity', 'heart', 'person', 'robot'],
+        default_index=0
+    )
 
+# --- HOME PAGE ---
+if selected == '🏠 Home':
+    st.title("Welcome to the Disease Outbreak Prediction System 🏥")
+    st.write("""
+        This intelligent system helps predict the likelihood of:
+        - **Diabetes**
+        - **Heart Disease**
+        - **Parkinson’s Disease**
 
-if selected == 'Diabetes Prediction':
+        🧠 Powered by Machine Learning models trained on medical data.  
+        Use the sidebar to choose which disease prediction you want to test.
+    """)
+    st.image("https://cdn-icons-png.flaticon.com/512/2966/2966488.png", width=250)
+
+elif selected == 'Diabetes Prediction':
     st.title('Diabetes Prediction by Dr. A.D.K')
 
     col1, col2, col3 = st.columns(3)
@@ -188,6 +203,7 @@ if selected == "AI Health Assistant 🤖":
         st.success(st.session_state.reply)
 
             
+
 
 
 
