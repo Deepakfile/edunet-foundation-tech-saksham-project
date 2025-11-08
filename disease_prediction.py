@@ -5,12 +5,11 @@ from streamlit_option_menu import option_menu
 import requests
 import json
 
-# --- PAGE CONFIG ---
 st.set_page_config(page_title="Prediction of Disease Outbreaks By A.D.K",
                    layout="wide",
                    page_icon="🩺")
 
-# --- LOAD MODELS ---
+
 working_dir = os.path.dirname(os.path.abspath(__file__))
 
 try:
@@ -25,8 +24,8 @@ except FileNotFoundError:
 with st.sidebar:
     selected = option_menu(
         '🩺 Prediction of Disease Outbreaks System',
-        ['🏠 Home',
-         ' Diabetes Prediction',
+        [
+        ' Diabetes Prediction',
          ' Heart Disease Prediction',
          ' Parkinson’s Prediction',
          '🤖 AI Health Assistant'],
@@ -35,21 +34,9 @@ with st.sidebar:
         default_index=0
     )
 
-# --- HOME PAGE ---
-if selected == '🏠 Home':
-    st.title("Welcome to the Disease Outbreak Prediction System 🏥")
-    st.write("""
-        This intelligent system helps predict the likelihood of:
-        - **Diabetes**
-        - **Heart Disease**
-        - **Parkinson’s Disease**
 
-        🧠 Powered by Machine Learning models trained on medical data.  
-        Use the sidebar to choose which disease prediction you want to test.
-    """)
-    st.image("https://cdn-icons-png.flaticon.com/512/2966/2966488.png", width=250)
 
-elif selected == 'Diabetes Prediction':
+if selected == 'Diabetes Prediction':
     st.title('Diabetes Prediction by Dr. A.D.K')
 
     col1, col2, col3 = st.columns(3)
@@ -203,6 +190,7 @@ if selected == "AI Health Assistant 🤖":
         st.success(st.session_state.reply)
 
             
+
 
 
 
