@@ -32,7 +32,7 @@ with st.sidebar:
         ],
         menu_icon='hospital-fill',
         icons=['activity', 'heart', 'person', 'robot'],
-        default_index=None
+        default_index=0  # ✅ Restored normal behavior
     )
 
 
