@@ -166,7 +166,7 @@ if selected == "🤖 AI Health Assistant":
                 If the user asks about anything outside these topics
                 (like coding, politics, movies, or history),
                 politely reply: "I'm sorry, I am Dr. A.D.K, and I can only answer health-related questions."
-                Always reply in the same language that the user used,and remember that if user question is in hinglish you also have to reply in hinglish
+                Always reply in the same language that the user used,and (remember that if user question is in hinglish) you also have to reply in hinglish
                 if user not mentioning the word 
                 as detail in his question then reply in short and meaningful answer.
 
@@ -186,3 +186,4 @@ if selected == "🤖 AI Health Assistant":
 
     if st.session_state.reply:
         st.success(st.session_state.reply)
+
