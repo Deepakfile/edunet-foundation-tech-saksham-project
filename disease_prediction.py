@@ -25,13 +25,14 @@ with st.sidebar:
     selected = option_menu(
         '🩺 Prediction of Disease Outbreaks System',
         [
-        ' Diabetes Prediction',
-         ' Heart Disease Prediction',
-         ' Parkinson’s Prediction',
-         '🤖 AI Health Assistant'],
+        'Diabetes Prediction',
+        'Heart Disease Prediction',
+        'Parkinson’s Prediction',
+        '🤖 AI Health Assistant'
+        ],
         menu_icon='hospital-fill',
-        icons=['house', 'activity', 'heart', 'person', 'robot'],
-        default_index=0
+        icons=['activity', 'heart', 'person', 'robot'],
+        default_index=None
     )
 
 
@@ -105,7 +106,7 @@ if selected == 'Heart Disease Prediction':
     st.success(heart_diagnosis)
 
 
-if selected == "Parkinsons Prediction":
+if selected == "Parkinson’s Prediction":
     st.title("Parkinson's Disease Prediction by Dr. A.D.K")
 
     col1, col2, col3, col4, col5 = st.columns(5)
@@ -135,16 +136,13 @@ if selected == "Parkinsons Prediction":
 
 
 
-
-
-
 from openai import OpenAI
 import streamlit as st
 if "reply" not in st.session_state:
     st.session_state.reply = ""
 
 
-if selected == "AI Health Assistant 🤖":
+if selected == "🤖 AI Health Assistant":
     st.title("🤖 Dr. A.D.K - AI Health & Diet Advisor.")
     st.write("Ask anything related to health, diseases, diet, or lifestyle.")
     st.code("Sugar wale ko kya khana chahiye?\nHeart patient ke liye best diet kya hai?")
@@ -188,20 +186,3 @@ if selected == "AI Health Assistant 🤖":
 
     if st.session_state.reply:
         st.success(st.session_state.reply)
-
-            
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
