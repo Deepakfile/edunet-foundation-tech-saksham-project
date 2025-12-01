@@ -138,9 +138,9 @@ if selected == "Parkinson’s Prediction":
 
 from openai import OpenAI
 import streamlit as st
+
 if "reply" not in st.session_state:
     st.session_state.reply = ""
-
 
 if selected == "🤖 AI Health Assistant":
     st.title("🤖 Dr. A.D.K - AI Health & Diet Advisor.")
@@ -151,32 +151,36 @@ if selected == "🤖 AI Health Assistant":
 
     if st.button("Ask Dr. A.D.K"):
         if question.strip() == "":
-            st.warning(" Pehle apna sawal likhiye.")
+            st.warning("Pehle apna sawal likhiye.")
         else:
             try:
-                # Using OpenRouter’s OpenAI-compatible API client
+                # OpenRouter client
                 client = OpenAI(
-                    base_url="https://openrouter.ai/api/v1",  
+                    base_url="https://openrouter.ai/api/v1",
                     api_key=st.secrets["OPENROUTER_API_KEY"]
                 )
 
-                prompt = f'''
-                You are Dr. A.D.K, a professional AI medical assistant.
-                You can only answer questions related to health, diseases, diet,sexual or lifestyle.
-                If the user asks about anything outside these topics
-                (like coding, politics, movies, or history),
-                politely reply: "I'm sorry, I am Dr. A.D.K, and I can only answer health-related questions."
-                Always reply in the same language that the user used,and (remember that if user question is in hinglish) you also have to reply in hinglish
-                if user not mentioning the word 
-                as detail in his question then reply in short and meaningful answer.
+                prompt = f"""
+You are Dr. A.D.K, a professional AI medical assistant.
 
-                Question: {question}
-                '''
+Rules:
+- You can ONLY answer questions related to health, diseases, symptoms, medicines, sexual health, diet, fitness or lifestyle.
+- If the user asks anything outside health (coding, politics, movies, history, etc.), reply:
+  "Sorry, I am Dr. A.D.K and I can only answer health-related questions."
+- Always reply in the SAME language and tone as the user. If the user writes in Hinglish, reply in Hinglish.
+- If the user does NOT ask for "detail", "full explanation" or "long answer", reply short, clear and meaningful.
+- Give practical advice: possible condition, what to do next, and precautions. 
+- Do NOT claim to replace a real doctor; suggest consulting a doctor for serious or persistent issues.
+
+User question: {question}
+                """.strip()
 
                 with st.spinner("🤖 Dr. A.D.K soch rahe hain..."):
                     response = client.chat.completions.create(
-                        model="minimax/minimax-m2",  
-                        messages=[{"role": "user", "content": prompt}]
+                        model="nousresearch/hermes-3-llama-3.1-405b:free",
+                        messages=[{"role": "user", "content": prompt}],
+                        max_tokens=300,
+                        temperature=0.7
                     )
 
                     st.session_state.reply = response.choices[0].message.content.strip()
@@ -186,5 +190,6 @@ if selected == "🤖 AI Health Assistant":
 
     if st.session_state.reply:
         st.success(st.session_state.reply)
+
 
 
