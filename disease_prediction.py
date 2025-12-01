@@ -161,7 +161,7 @@ if selected == "🤖 AI Health Assistant":
                     api_key=st.secrets["OPENROUTER_API_KEY"]
                 )
 
-                # Clean medical prompt — concise & safe
+                
                 prompt = f"""
 You are Dr. A.D.K, a professional AI medical assistant.
 
@@ -184,10 +184,10 @@ User Question: {question}
                         messages=[{"role": "user", "content": prompt}],
                         max_tokens=200,     
                         temperature=0.6,   
-                        top_p=0.9
+                       
                     )
 
-                st.session_state.reply = response.choices[0].message.content.strip()
+                st.session_state.reply = response.output_text.strip()
 
             except Exception as error:
                 st.error(" Server Error — Thodi der baad try karein.")
@@ -196,6 +196,7 @@ User Question: {question}
 
     if st.session_state.reply:
         st.success(st.session_state.reply)
+
 
 
 
