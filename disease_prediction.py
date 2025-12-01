@@ -176,19 +176,25 @@ User Question: {question}
                 with st.spinner("🤖 Dr. A.D.K soch rahe hain..."):
                     response = client.responses.create(
                         model="meta-llama/llama-3.3-70b-instruct:free",
-                        messages=[{"role": "user", "content": prompt}],
-                        max_output_tokens=250,
+                        input=[{"role": "user", "content": prompt}],
+                        max_tokens=200,      # << YEH LINE SABSE IMPORTANT HAI
                         temperature=0.6
                     )
 
-                st.session_state.reply = response.output_text.strip()
+                # OpenRouter responses format
+                try:
+                    text = response.output[0].content[0].text
+                except Exception:
+                    text = str(response)
+                st.session_state.reply = text.strip()
 
             except Exception as error:
-                st.error(" Server busy. Thodi der baad try karein.")
-                print(error)
+                st.error(" Server busy ya credits issue. Thodi der baad try karein.")
+                print("ERROR:", error)
 
     if st.session_state.reply:
         st.success(st.session_state.reply)
+
 
 
 
