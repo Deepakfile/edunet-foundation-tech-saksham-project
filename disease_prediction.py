@@ -179,7 +179,7 @@ User Question: {question}
 
                 with st.spinner("🤖 Dr. A.D.K soch rahe hain..."):
                     
-                    response = client.chat.completions.create(
+                    response = client.responses.create(
                         model="minimax/minimax-m2",
                         messages=[{"role": "user", "content": prompt}],
                         max_tokens=200,     
@@ -196,6 +196,7 @@ User Question: {question}
 
     if st.session_state.reply:
         st.success(st.session_state.reply)
+
 
 
 
