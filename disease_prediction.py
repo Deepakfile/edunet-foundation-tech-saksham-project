@@ -139,15 +139,14 @@ if selected == "Parkinson’s Prediction":
 from openai import OpenAI
 import streamlit as st
 
-# Session state for storing the last reply
+
 if "reply" not in st.session_state:
     st.session_state.reply = ""
 
-# Main Feature
 if selected == "🤖 AI Health Assistant":
     st.title("🤖 Dr. A.D.K - AI Health & Diet Advisor")
     st.write("Ask anything related to health, diseases, symptoms, diet, or lifestyle.")
-    st.code("Examples:\nSugar wale ko kya khana chahiye?\nHeart patient ke liye best diet kya hai?")
+    st.code("Examples:Sugar wale ko kya khana chahiye?Heart patient ke liye best diet kya hai?")
 
     question = st.text_input("Apna sawal likhiye (Health related only):")
 
@@ -156,7 +155,7 @@ if selected == "🤖 AI Health Assistant":
             st.warning("⚠️ Pehle apna sawal likhiye.")
         else:
             try:
-                # OpenRouter client
+                
                 client = OpenAI(
                     base_url="https://openrouter.ai/api/v1",
                     api_key=st.secrets["OPENROUTER_API_KEY"]
@@ -179,24 +178,25 @@ User Question: {question}
                 """.strip()
 
                 with st.spinner("🤖 Dr. A.D.K soch rahe hain..."):
-                    # THE ACTUAL MINI-MAX MODEL CALL
+                    
                     response = client.chat.completions.create(
                         model="minimax/minimax-m2",
                         messages=[{"role": "user", "content": prompt}],
-                        max_tokens=200,     # 🔥 REQUIRED for free credits
-                        temperature=0.6,    # medically stable responses
+                        max_tokens=200,     
+                        temperature=0.6,   
                         top_p=0.9
                     )
 
                 st.session_state.reply = response.choices[0].message.content.strip()
 
             except Exception as error:
-                st.error("❌ Server Error — Thodi der baad try karein.")
+                st.error(" Server Error — Thodi der baad try karein.")
                 st.session_state.reply = ""
-                print("Error:", error)  # Debug in console only
+                print("Error:", error)  
 
     if st.session_state.reply:
         st.success(st.session_state.reply)
+
 
 
 
