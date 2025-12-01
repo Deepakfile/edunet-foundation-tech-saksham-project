@@ -179,8 +179,8 @@ User question: {question}
                     response = client.chat.completions.create(
                         model="nousresearch/hermes-3-llama-3.1-405b:free",
                         messages=[{"role": "user", "content": prompt}],
-                        max_tokens=300,
-                        temperature=0.7
+                        max_tokens=250,
+                        temperature=0.6
                     )
 
                     st.session_state.reply = response.choices[0].message.content.strip()
@@ -190,6 +190,7 @@ User question: {question}
 
     if st.session_state.reply:
         st.success(st.session_state.reply)
+
 
 
 
