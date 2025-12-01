@@ -139,19 +139,21 @@ if selected == "Parkinson’s Prediction":
 from openai import OpenAI
 import streamlit as st
 
+# Session state for storing the last reply
 if "reply" not in st.session_state:
     st.session_state.reply = ""
 
+# Main Feature
 if selected == "🤖 AI Health Assistant":
-    st.title("🤖 Dr. A.D.K - AI Health & Diet Advisor.")
-    st.write("Ask anything related to health, diseases, diet, or lifestyle.")
-    st.code("Sugar wale ko kya khana chahiye?\nHeart patient ke liye best diet kya hai?")
+    st.title("🤖 Dr. A.D.K - AI Health & Diet Advisor")
+    st.write("Ask anything related to health, diseases, symptoms, diet, or lifestyle.")
+    st.code("Examples:\nSugar wale ko kya khana chahiye?\nHeart patient ke liye best diet kya hai?")
 
     question = st.text_input("Apna sawal likhiye (Health related only):")
 
     if st.button("Ask Dr. A.D.K"):
         if question.strip() == "":
-            st.warning("Pehle apna sawal likhiye.")
+            st.warning("⚠️ Pehle apna sawal likhiye.")
         else:
             try:
                 # OpenRouter client
@@ -160,36 +162,42 @@ if selected == "🤖 AI Health Assistant":
                     api_key=st.secrets["OPENROUTER_API_KEY"]
                 )
 
+                # Clean medical prompt — concise & safe
                 prompt = f"""
 You are Dr. A.D.K, a professional AI medical assistant.
 
-Rules:
-- You can ONLY answer questions related to health, diseases, symptoms, medicines, sexual health, diet, fitness or lifestyle.
-- If the user asks anything outside health (coding, politics, movies, history, etc.), reply:
-  "Sorry, I am Dr. A.D.K and I can only answer health-related questions."
-- Always reply in the SAME language and tone as the user. If the user writes in Hinglish, reply in Hinglish.
-- If the user does NOT ask for "detail", "full explanation" or "long answer", reply short, clear and meaningful.
-- Give practical advice: possible condition, what to do next, and precautions. 
-- Do NOT claim to replace a real doctor; suggest consulting a doctor for serious or persistent issues.
+RULES:
+ Only answer health related questions: diseases, symptoms, medicines, sexual health, diet, fitness, lifestyle.
+ If the question is NOT health-related, reply: but reply on general question like hi, hello , good morning 
+   "Sorry, I am Dr. A.D.K and I can only answer health-related questions."
+ Always reply in the SAME language as the user (Hinglish allowed).
+ Keep answers short, practical, and meaningful — unless the user clearly asks for "detail".
+ Include: Possible cause, what to do next, precautions.if user gives you more symptoms description about his situation then predict the disease too. 
+ You are not a real doctor. For serious issues, advise to visit a real doctor.
 
-User question: {question}
+User Question: {question}
                 """.strip()
 
                 with st.spinner("🤖 Dr. A.D.K soch rahe hain..."):
+                    # THE ACTUAL MINI-MAX MODEL CALL
                     response = client.chat.completions.create(
-                        model="nousresearch/hermes-3-llama-3.1-405b:free",
+                        model="minimax/minimax-m2",
                         messages=[{"role": "user", "content": prompt}],
-                        max_tokens=250,
-                        temperature=0.6
+                        max_tokens=200,     # 🔥 REQUIRED for free credits
+                        temperature=0.6,    # medically stable responses
+                        top_p=0.9
                     )
 
-                    st.session_state.reply = response.choices[0].message.content.strip()
+                st.session_state.reply = response.choices[0].message.content.strip()
 
-            except Exception as e:
-                st.session_state.reply = f"Unexpected Error: {e}"
+            except Exception as error:
+                st.error("❌ Server Error — Thodi der baad try karein.")
+                st.session_state.reply = ""
+                print("Error:", error)  # Debug in console only
 
     if st.session_state.reply:
         st.success(st.session_state.reply)
+
 
 
 
