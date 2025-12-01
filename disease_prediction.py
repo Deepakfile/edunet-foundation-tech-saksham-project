@@ -136,12 +136,6 @@ if selected == "Parkinson’s Prediction":
 
 
 
-from openai import OpenAI
-import streamlit as st
-
-if "reply" not in st.session_state:
-    st.session_state.reply = ""
-
 if selected == "🤖 AI Health Assistant":
     st.title("🤖 Dr. A.D.K - AI Health & Diet Advisor")
     st.write("Ask anything related to health, diseases, symptoms, diet, or lifestyle.")
@@ -151,7 +145,7 @@ if selected == "🤖 AI Health Assistant":
 
     if st.button("Ask Dr. A.D.K"):
         if question.strip() == "":
-            st.warning(" Pehle apna sawal likhiye.")
+            st.warning("⚠️ Pehle apna sawal likhiye.")
         else:
             try:
                 client = OpenAI(
@@ -161,39 +155,30 @@ if selected == "🤖 AI Health Assistant":
 
                 prompt = f"""
 You are Dr. A.D.K, an AI Health & Diet Advisor.
-
 Rules:
-- Only health-related questions: symptoms, diseases, medicines, diet, sexual health, lifestyle.
-- If irrelevant topic: reply "Sorry, I am Dr. A.D.K. I can only answer health-related questions."
-- Reply in SAME language as the user (Hinglish allowed).
-- Short & meaningful advice unless user asks "detail".
-- Include: possible cause + what to do next + precautions.
-- Add medical safety line: "Severe condition ho to doctor ko turant dikhao."
+- Only health-related questions allowed.
+- Hinglish me reply karna allowed.
+- Short but correct medical advice.
+- Serious condition ho to doctor ko turant dikhao.
 
 User Question: {question}
 """.strip()
 
                 with st.spinner("🤖 Dr. A.D.K soch rahe hain..."):
-                    response = client.responses.create(
+                    response = client.chat.completions.create(
                         model="meta-llama/llama-3.3-70b-instruct:free",
-                        input=[{"role": "user", "content": prompt}],
-                        max_tokens=200,      # << YEH LINE SABSE IMPORTANT HAI
+                        messages=[{"role": "user", "content": prompt}],
+                        max_tokens=180,   # REQUIRED LIMIT
                         temperature=0.6
                     )
 
-                # OpenRouter responses format
-                try:
-                    text = response.output[0].content[0].text
-                except Exception:
-                    text = str(response)
-                st.session_state.reply = text.strip()
+                st.session_state.reply = response.choices[0].message.content.strip()
 
             except Exception as error:
-                st.error(" Server busy ya credits issue. Thodi der baad try karein.")
+                st.error("Server Busy or Credits Issue. Try Later.")
                 print("ERROR:", error)
 
-    if st.session_state.reply:
-        st.success(st.session_state.reply)
+
 
 
 
