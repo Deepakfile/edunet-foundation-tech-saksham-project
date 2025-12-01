@@ -139,63 +139,58 @@ if selected == "Parkinson’s Prediction":
 from openai import OpenAI
 import streamlit as st
 
-
 if "reply" not in st.session_state:
     st.session_state.reply = ""
 
 if selected == "🤖 AI Health Assistant":
     st.title("🤖 Dr. A.D.K - AI Health & Diet Advisor")
     st.write("Ask anything related to health, diseases, symptoms, diet, or lifestyle.")
-    st.code("Examples:Sugar wale ko kya khana chahiye?Heart patient ke liye best diet kya hai?")
+    st.code("Examples:\nSugar wale ko kya khana chahiye?\nHeart patient ke liye best diet kya hai?")
 
     question = st.text_input("Apna sawal likhiye (Health related only):")
 
     if st.button("Ask Dr. A.D.K"):
         if question.strip() == "":
-            st.warning("⚠️ Pehle apna sawal likhiye.")
+            st.warning(" Pehle apna sawal likhiye.")
         else:
             try:
-                
                 client = OpenAI(
                     base_url="https://openrouter.ai/api/v1",
                     api_key=st.secrets["OPENROUTER_API_KEY"]
                 )
 
-                
                 prompt = f"""
-You are Dr. A.D.K, a professional AI medical assistant.
+You are Dr. A.D.K, an AI Health & Diet Advisor.
 
-RULES:
- Only answer health related questions: diseases, symptoms, medicines, sexual health, diet, fitness, lifestyle.
- If the question is NOT health-related, reply: but reply on general question like hi, hello , good morning 
-   "Sorry, I am Dr. A.D.K and I can only answer health-related questions."
- Always reply in the SAME language as the user (Hinglish allowed).
- Keep answers short, practical, and meaningful — unless the user clearly asks for "detail".
- Include: Possible cause, what to do next, precautions.if user gives you more symptoms description about his situation then predict the disease too. 
- You are not a real doctor. For serious issues, advise to visit a real doctor.
+Rules:
+- Only health-related questions: symptoms, diseases, medicines, diet, sexual health, lifestyle.
+- If irrelevant topic: reply "Sorry, I am Dr. A.D.K. I can only answer health-related questions."
+- Reply in SAME language as the user (Hinglish allowed).
+- Short & meaningful advice unless user asks "detail".
+- Include: possible cause + what to do next + precautions.
+- Add medical safety line: "Severe condition ho to doctor ko turant dikhao."
 
 User Question: {question}
-                """.strip()
+""".strip()
 
                 with st.spinner("🤖 Dr. A.D.K soch rahe hain..."):
-                    
                     response = client.responses.create(
-                        model="minimax/minimax-m2",
+                        model="meta-llama/llama-3.3-70b-instruct:free",
                         messages=[{"role": "user", "content": prompt}],
-                        max_tokens=200,     
-                        temperature=0.6,   
-                       
+                        max_output_tokens=250,
+                        temperature=0.6
                     )
 
                 st.session_state.reply = response.output_text.strip()
 
             except Exception as error:
-                st.error(" Server Error — Thodi der baad try karein.")
-                st.session_state.reply = ""
-                print("Error:", error)  
+                st.error(" Server busy. Thodi der baad try karein.")
+                print(error)
 
     if st.session_state.reply:
         st.success(st.session_state.reply)
+
+
 
 
 
