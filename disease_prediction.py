@@ -139,13 +139,13 @@ if selected == "Parkinson’s Prediction":
 if selected == "🤖 AI Health Assistant":
     st.title("🤖 Dr. A.D.K - AI Health & Diet Advisor")
     st.write("Ask anything related to health, diseases, symptoms, diet, or lifestyle.")
-    st.code("Examples:\nSugar wale ko kya khana chahiye?\nHeart patient ke liye best diet kya hai?")
+    st.code("Examples:Sugar wale ko kya khana chahiye?")
 
     question = st.text_input("Apna sawal likhiye (Health related only):")
 
     if st.button("Ask Dr. A.D.K"):
         if question.strip() == "":
-            st.warning("⚠️ Pehle apna sawal likhiye.")
+            st.warning(" Pehle apna sawal likhiye.")
         else:
             try:
                 client = OpenAI(
@@ -177,6 +177,7 @@ User Question: {question}
             except Exception as error:
                 st.error("Server Busy or Credits Issue. Try Later.")
                 print("ERROR:", error)
+
 
 
 
